@@ -1,0 +1,919 @@
+<html>
+<head>
+    <style>
+        html, body{
+            margin:0;
+        }
+		#viewport
+{
+	background-color: white;
+	width: 100%;
+	height:100%;
+	
+	}
+	
+		.fullscreen
+{
+	width: 100%;
+	height:100%;
+	
+	}
+    </style>
+	<script src="js/jquery.min.js"></script> 
+	<script src="build/three.js"></script>
+	<script src="Detector.js"></script>
+	<script src="build/jsRocket.js"></script>
+	<script src="js/MTLLoader.js"></script>
+	<script src="js/OBJMTLLoader.js"></script>
+
+</head>
+<script type="x-shader/x-vertex" id="vertexshader1">
+			
+			varying vec2 vUv;
+			void main()	{
+				vUv = uv;
+				gl_Position = vec4( position, 1.0 );
+
+			}
+		</script>
+
+		<script type="x-shader/x-fragment" id="fragmentshader1">
+				 
+				 uniform sampler2D texture;
+  				 varying vec2 vUv;
+				 uniform float time;
+				 uniform vec2 resolution;
+			
+
+					float glitter = 11.2;
+					float utime = time / 2.0;
+					float an= sin(utime)*3.14157;
+					float h=0.7;
+
+					void main() {
+						float zoo = .23232+.38*sin(.7*utime);
+	 	
+						vec2 p = -1.8*zoo+2.0*vUv.xy;  
+ 
+						vec2 uv; 	
+ 
+   						uv.x =  p.x / p.y ;
+   					
+						uv.y =  01.*utime+h / abs(p.x);
+						gl_FragColor = vec4 (texture2D(texture,uv).xyz*p.y*p.y, 1.0);
+								}
+			</script>
+
+
+	<script type="x-shader/x-vertex" id="vertexshader2">
+			
+			varying vec2 vUv;
+			void main()	{
+				vUv = uv;
+				gl_Position = vec4( position, 1.0 );
+
+			}
+		</script>
+
+		<script type="x-shader/x-fragment" id="fragmentshader2">
+		
+		uniform sampler2D texture;
+  		varying vec2 vUv;
+		uniform float time;
+		uniform vec2 resolution;
+		
+		float utime = time/2.0;
+		float an= sin(utime)/3.14157;
+		float as= sin(an);
+		float zoo = .23232+.38*sin(.7*utime);
+		
+			
+		void main() {
+						
+						vec2 p =(1.7+an)* vUv.xy; 
+						vec2 uv; 
+						vec2 z;
+						vec2 c;
+						z = c;
+						
+						
+		c.x = p.x * sin(2.0)+an;
+		c.y = p.y *sin(2.0)-an;
+		int i;
+		
+		
+ for( int i=0; i<38;i++ )
+{	
+        float x = (z.x * z.x - z.y * z.y * zoo ) + c.x;
+        float y = (z.y * z.x + z.x * z.y * zoo) + c.y;
+      
+		uv.x =  x;
+		uv.y =  y;
+	         
+		z.x = x+as;
+		z.y = y+as;    
+}
+				
+		vec3 col = texture2D( texture,uv ).zyx;
+		gl_FragColor = vec4(col,1.0);
+								}
+		
+	</script>			
+			
+			
+			
+			
+			
+			
+<script>
+var filesLoaded = 0;
+var filesToLoad = 11;
+var pause = false;
+var mesh3 = 0;
+
+    $(document).ready(function(){
+				window.addEventListener( 'resize', onWindowResize, false );					
+				z = 0;
+				HEIGHT = 256;
+				WIDTH = 256;
+				count = 0;
+				$('#viewport1').hide();
+				$('#viewport').hide();
+				$('#viewport3').hide();
+				$('#viewport4').hide();
+				$('#viewport5').hide();
+				$('#viewport6').hide();
+				$('#viewport7').hide();
+				$('#viewport8').hide();
+				$('#viewport9').hide();
+				$('#viewporta').hide();
+			
+				var canvas = document.createElement('canvas');
+				canvasCtx = canvas.getContext("2d");
+				image = new Image();
+				image.onload = function() {
+  				canvasCtx.drawImage(image, 0, 0);
+    			imgData = canvasCtx.getImageData(0,0,WIDTH,HEIGHT);
+				texture = imgData.data;
+				filesLoaded++;
+				}	
+				
+				 
+				image.src = 'FoiledAgain.png';
+				
+				canvas12 = document.getElementById("viewport1");
+				canvasCtx1 = canvas12.getContext("2d");
+			
+    			image1 = new Image();
+				image1.onload = function() {
+  				canvasCtx1.drawImage(image1, 0, 0);
+    			imgData1 = canvasCtx1.getImageData(0,0,655,530);
+				texture1 = imgData1.data;
+				filesLoaded++;
+				}	
+				image1.src = 'Paradise_Entire-Logo.png';
+				
+				canvas2 = document.getElementById("viewport3");
+				canvasCtx2 = canvas2.getContext("2d");
+				
+				image2 = new Image();
+				image2.onload = function() {
+  				canvasCtx2.drawImage(image2, 0, 0);
+    			imgData2 = canvasCtx2.getImageData(0,0,655,530);
+				texture2 = imgData2.data;
+				filesLoaded++;
+				}	
+				image2.src = 'Planet_Earth_Logo.png';
+				
+				canvas3 = document.getElementById("viewport4");
+				canvasCtx3 = canvas3.getContext("2d");
+				
+				image3 = new Image();
+				image3.onload = function() {
+  				canvasCtx3.drawImage(image3, 0, 0);
+    			imgData3 = canvasCtx3.getImageData(0,0,655,530);
+				texture3 = imgData3.data;
+				filesLoaded++;
+				}	
+				image3.src = 'overlay_image.png';
+				
+				canvas4 = document.getElementById("viewport5");
+				canvasCtx4 = canvas4.getContext("2d");
+				
+				image4 = new Image();
+				image4.onload = function() {
+  				canvasCtx4.drawImage(image4, 0, 0);
+    			imgData4 = canvasCtx4.getImageData(0,0,1132,764);
+				texture4 = imgData4.data;
+				filesLoaded++;
+				}	
+				image4.src = 'tau_ceti_logo.png';
+				
+				canvas5 = document.getElementById("viewport6");
+				canvasCtx5 = canvas5.getContext("2d");
+				
+				image5 = new Image();
+				image5.onload = function() {
+  				canvasCtx5.drawImage(image5, 0, 0);
+    			imgData5 = canvasCtx5.getImageData(0,0,1132,764);
+				texture5 = imgData5.data;
+				filesLoaded++;
+				}	
+				image5.src = 'premium.png';
+				
+				canvas6 = document.getElementById("viewport7");
+				canvasCtx6 = canvas6.getContext("2d");
+				
+				image6 = new Image();
+				image6.onload = function() {
+  				canvasCtx6.drawImage(image6, 0, 0);
+    			imgData6 = canvasCtx6.getImageData(0,0,1271,858);
+				texture6 = imgData6.data;
+				filesLoaded++;
+				}	
+				image6.src = 'Planet_P.png';
+				
+				canvas7 = document.getElementById("viewport8");
+				canvasCtx7 = canvas7.getContext("2d");
+				
+				image7 = new Image();
+				image7.onload = function() {
+  				canvasCtx7.drawImage(image7, 0, 0);
+    			imgData7 = canvasCtx7.getImageData(0,0,655,530);
+				texture7 = imgData7.data;
+				filesLoaded++;
+				}	
+				image7.src = 'text01Vb.png';
+				
+				canvas8 = document.getElementById("viewport9");
+				canvasCtx8 = canvas8.getContext("2d");
+				
+				image8 = new Image();
+				image8.onload = function() {
+  				canvasCtx8.drawImage(image8, 0, 0);
+    			imgData8 = canvasCtx8.getImageData(0,0,655,530);
+				texture8 = imgData8.data;
+				filesLoaded++;
+				}	
+				image8.src = 'text02Vb.png';
+				
+				canvas9 = document.getElementById("viewporta");
+				canvasCtx9 = canvas9.getContext("2d");
+				
+				image9 = new Image();
+				image9.onload = function() {
+  				canvasCtx9.drawImage(image9, 0, 0);
+    			imgData9 = canvasCtx9.getImageData(0,0,655,530);
+				texture9 = imgData9.data;
+				filesLoaded++;
+				}	
+				image9.src = 'text03Vb.png';
+				
+				texture=[];
+				element = document.getElementById("viewport");
+				c = element.getContext("2d");
+				c.fillRect( 0, 0, WIDTH, HEIGHT );
+								
+// filled rectangle we can use as destination
+				dst_image = c.getImageData( 0, 0, WIDTH,HEIGHT );
+				canvasData = dst_image.data;
+				
+				var ORIGIN = new THREE.Vector3();
+				var _audio = new Audio();
+	
+				var time = 0;
+				var camera, scene, renderer, geometry, material, mesh,mesh3;
+				var text3d ;
+				var directionalLight, directionalLight2, pointLight, ambientLight, spotLight;
+	
+				var canvas1 = document.getElementById('canvas1') ;
+    
+				var BPM = 135,
+				ROWS_PER_BEAT = 8,
+				ROW_RATE = BPM / 60 * ROWS_PER_BEAT;
+            
+				var _demoMode = true, //Set to true for preview
+				_syncDevice = new JSRocket.SyncDevice(),
+				_row = 0,
+				_previousIntRow;
+				prepareScene();
+				waitLoading();
+				
+				
+        function waitLoading()	// thx Shazz/TRSi for this snippet!
+				{
+				console.log("Files loaded : " + filesLoaded + " / " + filesToLoad);
+				if(filesLoaded == filesToLoad)
+					{
+				console.log("Loading completed");
+				
+				alert("Please switch to fullscreen.");
+				prepareSync();
+						}
+			else
+				{
+				requestAnimationFrame( waitLoading );
+					}
+					}
+		
+function prepareScene()
+{
+		if ( ! Detector.webgl ) Detector.addGetWebGLMessage(); 
+        // urls of the images,
+        // one per half axis
+        var urls = [
+              'texture/2.jpg',
+              'texture/4.jpg',
+              'texture/6.jpg',
+              'texture/5.jpg',
+              'texture/1.jpg',
+              'texture/3.jpg'
+            ];
+
+        // wrap it up into the object that we need
+  
+
+
+// Step 1 : Add Scene
+scene = new THREE.Scene();
+scene1 = new THREE.Scene();
+  var manager = new THREE.LoadingManager();
+				manager.onProgress = function ( item, loaded, total ) {
+					filesLoaded++;
+					
+				};
+
+				
+				// model
+
+			var loader = new THREE.OBJMTLLoader();
+				loader.addEventListener( 'load', function ( event ) {
+
+					var object = event.content;
+
+					
+					
+					mesh3 = object;
+					filesLoaded++;
+				});
+				loader.load( 'Paradise_bird.obj', 'Paradise_bird.mtl' );
+				
+
+  var cubemap = THREE.ImageUtils.loadTextureCube(urls);
+		var material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: cubemap } );
+        var shader = THREE.ShaderLib[ "cube" ];
+				shader.uniforms[ "tCube" ].value = cubemap;
+
+				var material = new THREE.ShaderMaterial( {
+
+					fragmentShader: shader.fragmentShader,
+					vertexShader: shader.vertexShader,
+					uniforms: shader.uniforms,
+					depthWrite: false,
+					side: THREE.BackSide
+
+				} ),
+
+				space = new THREE.Mesh( new THREE.CubeGeometry( 1900, 1900, 1900 ), material );
+				scene.add( space );
+				
+				
+				
+				
+// Step 2 : Add Camera
+camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 10000 );
+camera.position.z = 150;
+camera1 = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 10000 );
+camera1.position.z = 150;
+scene.add( camera );
+scene1.add( camera1);      
+// Step 3 : Add Object
+// Parameter 1 : radius
+// Parameter 2 : segmentsWidth
+// Parameter 3 : segmentsHeight
+geometry = new THREE.SphereGeometry( 30, 30, 24 ) ;
+ 
+var material =THREE.ImageUtils.loadTexture( 'earth_texture_with_couds2.jpg' );
+var Bump = THREE.ImageUtils.loadTexture( "earthbump1k.jpg" );
+var specular =  THREE.ImageUtils.loadTexture( "earthspec1k.jpg" );
+ 
+ mappedTexture = new THREE.MeshPhongMaterial( { color: 0xffffff, map: material, specular: 0xffffff, specularMap: specular, bumpMap: Bump, bumpScale: .8,  shading: THREE.SmoothShading, emissive: 0x111111} );
+ 
+ mesh = new THREE.Mesh( geometry, mappedTexture ) ;
+scene.add( mesh );
+  
+  // add subtle ambient lighting
+      var ambientLight = new THREE.AmbientLight(0xbbbbbb);
+      scene.add(ambientLight);
+      var ambientLight = new THREE.AmbientLight(0xbbbbbb);
+      scene1.add(ambientLight);
+      // directional lighting
+      var directionalLight = new THREE.DirectionalLight(0xffffff);
+      directionalLight.position.set(0, 1, 1).normalize();
+	   
+      scene.add(directionalLight);
+	 var directionalLight1 = new THREE.DirectionalLight(0xffffff);
+	
+      directionalLight1.position.set(1, 1, 1).normalize();
+	  scene1.add(directionalLight1);
+	  var directionalLight2 = new THREE.DirectionalLight( 0xffffff, 0.5 );
+directionalLight.position.set( 0, 1, 0 );
+scene1.add(directionalLight2);
+ // Step 4 : Add Renderer
+//renderer = new THREE.CanvasRenderer();
+renderer = new THREE.WebGLRenderer(canvas1);
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.autoClear = false;
+document.body.appendChild( renderer.domElement );
+}
+ 
+        function prepareSync() {
+
+            if (_demoMode) {
+                _syncDevice.setConfig({'rocketXML':'cube.rocket'});
+                _syncDevice.init("demo");
+            } else {
+                //_syncDevice.setConfig({'socketURL':'ws://192.168.0.100:1338'});
+                _syncDevice.init();
+            }
+
+            _syncDevice.on('ready', onSyncReady);
+            _syncDevice.on('update', onSyncUpdate);
+            _syncDevice.on('play', onPlay);
+            _syncDevice.on('pause', onPause);
+        }
+
+        function onSyncReady() {
+            
+            _clearR = _syncDevice.getTrack('clearR');
+            _clearG = _syncDevice.getTrack('clearG');
+            _clearB = _syncDevice.getTrack('clearB');
+            _cameraRotation = _syncDevice.getTrack('rotation');
+            _distance = _syncDevice.getTrack('distance');
+            _fov = _syncDevice.getTrack('FOV');
+
+            prepareAudio();
+        }
+
+        function prepareAudio() {
+            //Alpha_C just whipped this up for jsRocket demo purposes
+            _audio.src = "demotune.ogg";
+            _audio.load();
+            _audio.preload = true;
+            _audio.addEventListener('canplay', onAudioReady);
+        }
+        
+        function onAudioReady() {
+            if(_demoMode) { 
+                render();
+                _audio.play();
+            } else {
+                _audio.pause();
+                _audio.currentTime = _row / ROW_RATE;
+            }
+        }
+
+        function onSyncUpdate(row) {
+
+            if (!isNaN(row)) {
+                _row = row;
+            }
+            render();
+        }
+
+        function onPlay() {
+
+            _audio.currentTime = _row / ROW_RATE;
+            _audio.play();
+            render();
+        }
+
+        function onPause() {
+
+            _row = _audio.currentTime * ROW_RATE;
+            window.cancelAnimationFrame(render, document);
+            _audio.pause();
+        }
+		
+		function animate()
+{
+		  if (pause === false){
+		  time += 0.005;
+
+          camera.position.x = Math.sin(time) * 400 * _fov.getValue(_row);
+		  camera.position.y = Math.sin(time) * 200;
+          camera.position.z = Math.cos(time) * 400;
+		 }
+          camera.lookAt(ORIGIN);
+		 
+// note: three.js includes requestAnimationFrame shim
+	//	  requestAnimationFrame( animate );
+		  render();
+}
+
+function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+		}
+
+        function render() {
+
+            if(_audio.paused === false) {
+                //otherwise we may jump into a point in the audio where there's
+                //no timeframe, resulting in Rocket setting row 2 and we report
+                //row 1 back - thus Rocket spasming out
+                _row = _audio.currentTime * ROW_RATE;
+				
+				// this informs Rocket where we are
+            	_syncDevice.update(_row);
+            }
+			if (pause === false) {
+			
+					
+				
+		mesh.rotation.x += 0.002;
+			mesh.rotation.y += 0.008;
+			mesh.scale.x += 0.0001 ;       
+			mesh.scale.y += 0.0001; 
+			mesh.scale.z += 0.0001;
+			
+			mesh3.scale.x = 1.2 ;       
+			mesh3.scale.y = 1.2; 
+			mesh3.scale.z = 1.2;
+			}
+			if ( _clearB.getValue(_row) == 2.5){
+			
+				scene1.add( mesh3);
+				}
+			if ( _clearG.getValue(_row) == 2.5){
+				
+			mesh3.translateZ( 0.089 );
+			}
+			
+			renderer.clear();                     // clear buffers
+			renderer.render( scene, camera );     // render scene 1
+			renderer.clear( false, true, false ); // clear depth buffer
+			renderer.render( scene1, camera1 );    // render scene 2
+
+
+		if((_demoMode === true)  || (_audio.paused === false))
+				
+			switch (_distance.getValue(_row))
+			{
+			case 2.0:
+					$('#viewport8').fadeIn(6000);
+					pause = false;
+					window.requestAnimationFrame(animate, document);	
+					break;
+			case 3.0:
+					$('#viewport8').fadeOut(6000);
+					pause = false;
+					window.requestAnimationFrame(animate, document);	
+					break;		
+					
+			case 4.0:
+					
+					$('#viewport9').fadeIn(6000);
+					pause = false;
+					window.requestAnimationFrame(animate, document);	
+					break;
+					
+			case 5.0:
+					$('#viewport9').fadeOut(6000);
+					pause = false;
+					window.requestAnimationFrame(animate, document);	
+					break;		
+			case 6.0:
+					$('#viewporta').fadeIn(6000);
+					pause = false;
+					window.requestAnimationFrame(animate, document);	
+					break;
+			case 7.0:
+					$('#viewporta').fadeOut(6000);
+					pause = false;
+					window.requestAnimationFrame(animate, document);	
+					break;
+			case 8.0:
+					$('#canvas1').hide(0);
+					$('#viewport5').fadeIn();
+				
+					pause = true;
+					window.requestAnimationFrame(animate, document);	
+					break;
+			case 9.0:
+					pause = false;
+				 	$('#viewport5').fadeOut(5600);
+					$('#canvas1').fadeIn(5600);
+					
+					window.requestAnimationFrame(animate, document);
+					
+					break;
+			case 10.0:
+					$('#canvas1').hide();
+					$('#viewport1').fadeIn(5600);
+					$('#viewport').fadeIn(1700);
+					window.requestAnimationFrame(tunnel,document);
+					break;
+			default:
+					window.requestAnimationFrame(animate,document);
+					
+
+					}	
+			else
+						{
+					window.cancelAnimationFrame(animate, document);	
+}			
+									
+						}
+				
+				function tunnel() {
+				if(_audio.paused === false) {
+                //otherwise we may jump into a point in the audio where there's
+                //no timeframe, resulting in Rocket setting row 2 and we report
+                //row 1 back - thus Rocket spasming out
+                _row = _audio.currentTime * ROW_RATE;
+				
+				// this informs Rocket where we are
+            	_syncDevice.update(_row);
+            }
+				count += 0.5;
+				var src_index, dst_index,
+				x, y, u, v, w, a, r,  pi = Math.PI;
+
+
+
+				for (var yi = 0; yi < HEIGHT; yi++ ) {
+					
+					for ( var xi = 0; xi < WIDTH; xi++ ) {
+
+						index = (xi + yi * WIDTH) * 4;
+		
+		
+						
+						x = xi - count;
+						y =yi ;
+						
+							
+						a = Math.atan2(y,x);
+						r = Math.sqrt( x * x  + y * y );
+
+						u = 20 / r;
+						v = 0.15 * a / pi;
+						w = r * 0.01 ;
+
+						u = u * 512 + (count + 8);
+						
+						v = v * 512 ;
+
+						src_index = ( ( ( u >> 0 ) + ( v >> 0) * WIDTH) * 4 ) >>> 0;
+
+										
+						
+						canvasData[index+0] = texture[src_index+0] *w ;
+						canvasData[index+1] = texture[src_index+1] *w;
+						canvasData[index+2] = texture[src_index+2] *w;
+					
+							
+							canvasData[index+3] = texture[src_index+3]  *w ;
+					
+						
+						
+					
+
+					}
+
+				}
+						c.putImageData(dst_image, 0, 0);
+				
+						window.requestAnimationFrame(tunnel, document);
+						
+						if (_cameraRotation.getValue(_row) == 1.0){
+						$('#viewport1').hide();
+						$('#viewport').hide();
+						$('#canvas1').show();
+						$('#viewport3').show(1600);
+				
+						window.requestAnimationFrame(webgltunnel);
+	
+												}			
+		}
+
+		function webgltunnel() {
+				
+				if(_audio.paused === false) {
+                //otherwise we may jump into a point in the audio where there's
+                //no timeframe, resulting in Rocket setting row 2 and we report
+                //row 1 back - thus Rocket spasming out
+                _row = _audio.currentTime * ROW_RATE;
+				
+				// this informs Rocket where we are
+            	_syncDevice.update(_row);
+            }
+				init1();
+				animate1();
+
+		function init1() {
+
+			camera_tunnel = new THREE.PerspectiveCamera( 30, WIDTH / HEIGHT, 1, 10000 );
+			camera_tunnel.position.z = 300;
+
+			scene_tunnel = new THREE.Scene();
+				start_time = Date.now();
+
+				uniforms = {
+					time: { type: "f", value: 1.0 },
+					resolution: { type: "v2", value: new THREE.Vector2() },
+					texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "wall_256x256.png" ) }
+				};
+				
+
+			uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.RepeatWrapping;
+
+			var shaderMaterial = new THREE.ShaderMaterial( {
+				uniforms: 		uniforms,
+				vertexShader:   document.getElementById( 'vertexshader1' ).textContent,
+				fragmentShader: document.getElementById( 'fragmentshader1' ).textContent
+
+			});
+
+			mesh_tunnel = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), shaderMaterial );
+			scene_tunnel.add( mesh_tunnel );
+		
+	//		renderer = new THREE.WebGLRenderer(canvas1);
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.autoClear = false;
+			document.body.appendChild( renderer.domElement );
+				}
+
+		
+		function animate1() {
+				if(_audio.paused === false) {
+                //otherwise we may jump into a point in the audio where there's
+                //no timeframe, resulting in Rocket setting row 2 and we report
+                //row 1 back - thus Rocket spasming out
+                _row = _audio.currentTime * ROW_RATE;
+				
+				// this informs Rocket where we are
+            	_syncDevice.update(_row);
+            }
+			
+				render1();
+			if((_demoMode === true)  || (_audio.paused === false))	
+				switch (_cameraRotation.getValue(_row))
+					{
+				case 3.0:
+					$('#viewport3').hide();
+					$('#viewport7').fadeIn(5600);
+					isPaused = true;
+					window.requestAnimationFrame(animate1,document);
+					break;		
+				case 5.0:
+					isPaused = false;
+					$('#viewport7').fadeOut();
+					$('#viewport4').fadeIn(5600);
+					window.requestAnimationFrame(webglmandel,document);
+					break;
+				default:
+					window.requestAnimationFrame(animate1,document);
+				
+					}	
+				else
+						{
+					window.cancelAnimationFrame(animate, document);	
+}			
+								
+			
+		}
+		function render1() {
+			
+			uniforms.time.value += 0.05;
+			renderer.render( scene_tunnel, camera );
+		}
+
+}
+		
+
+	function webglmandel() {
+				
+				if(_audio.paused === false) {
+                //otherwise we may jump into a point in the audio where there's
+                //no timeframe, resulting in Rocket setting row 2 and we report
+                //row 1 back - thus Rocket spasming out
+                _row = _audio.currentTime * ROW_RATE;
+				
+				// this informs Rocket where we are
+            	_syncDevice.update(_row);
+            }
+				init2();
+				animate2();
+
+		function init2() {
+
+			camera_mandel = new THREE.PerspectiveCamera( 30, WIDTH / HEIGHT, 1, 10000 );
+			camera_mandel.position.z = 300;
+
+			scene_mandel = new THREE.Scene();
+				start_time = Date.now();
+
+				uniforms = {
+					time: { type: "f", value: 1.0 },
+					resolution: { type: "v2", value: new THREE.Vector2() },
+					texture:   { type: "t", value: THREE.ImageUtils.loadTexture( "texture/texl7.jpg" ) }
+				};
+				
+
+			uniforms.texture.value.wrapS = uniforms.texture.value.wrapT = THREE.RepeatWrapping;
+
+			var shaderMaterial2 = new THREE.ShaderMaterial( {
+				uniforms: 		uniforms,
+				vertexShader:   document.getElementById( 'vertexshader2' ).textContent,
+				fragmentShader: document.getElementById( 'fragmentshader2' ).textContent
+
+			});
+
+			mesh_mandel = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), shaderMaterial2 );
+			scene_mandel.add( mesh_mandel );
+		
+	//		renderer = new THREE.WebGLRenderer(canvas1);
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.autoClear = false;
+			document.body.appendChild( renderer.domElement );
+				}
+
+		
+		function animate2() {
+				if(_audio.paused === false) {
+                //otherwise we may jump into a point in the audio where there's
+                //no timeframe, resulting in Rocket setting row 2 and we report
+                //row 1 back - thus Rocket spasming out
+                _row = _audio.currentTime * ROW_RATE;
+				
+				// this informs Rocket where we are
+            	_syncDevice.update(_row);
+            }
+			window.requestAnimationFrame(animate2, document); 
+			render2();
+		}
+		function render2() {
+			canvasCtx3.font="20px Georgia";
+			canvasCtx3.fillStyle = 'white';
+			canvasCtx3.fillText("Greetings to:",WIDTH/0.3,(HEIGHT/2)+10);
+			canvasCtx3.fillText("X-MEN",WIDTH/0.3,(HEIGHT/2)+32);
+			canvasCtx3.fillText("PoPsY TeAm",WIDTH/0.3,(HEIGHT/2)+54);
+			canvasCtx3.fillText("Calodox",WIDTH/0.3,(HEIGHT/2)+66);
+			canvasCtx3.fillText("Demodays",WIDTH/0.3,(HEIGHT/2)+88);
+			canvasCtx3.fillText("LNX",WIDTH/0.3,(HEIGHT/2)+110);
+			canvasCtx3.fillText("FRequency",WIDTH/0.3,(HEIGHT/2)+132);
+			canvasCtx3.fillText("Dreamdealers",WIDTH/0.3,(HEIGHT/2)+154);
+			canvasCtx3.fillText("Joy INN",WIDTH/0.3,(HEIGHT/2)+176);
+			canvasCtx3.fillText("TRSi",WIDTH/0.3,(HEIGHT/2)+196);
+			canvasCtx3.fillText("Razor1911",WIDTH/0.3,(HEIGHT/2)+232);
+			canvasCtx3.fillText("Equinox",WIDTH/0.3,(HEIGHT/2)+254);
+			canvasCtx3.fillText("Titan",WIDTH/0.3,(HEIGHT/2)+266);
+			canvasCtx3.fillText("Fairlight",WIDTH/0.3,(HEIGHT/2)+288);
+			canvasCtx3.fillText("Spaceballs",WIDTH/0.3,(HEIGHT/2)+310);
+			canvasCtx3.fillText("Accession",WIDTH/0.3,(HEIGHT/2)+332);
+			canvasCtx3.fillText("Byterapers",WIDTH/0.3,(HEIGHT/2)+354);
+			canvasCtx3.fillText("Scarab",WIDTH/0.3,(HEIGHT/2)+376);
+			uniforms.time.value += 0.05;
+			renderer.render( scene_mandel, camera );
+			
+			if(_cameraRotation.getValue(_row) == 255 ) {
+				$('#viewport6').fadeIn(5600);
+						
+		}
+
+}
+		}
+	
+  });
+</script>
+<body>
+
+<canvas id='canvas1'  width="512" height="512" style=" position: absolute; left: 0; top: 0; z-index: -10; background-color: #000000; "></canvas>
+<canvas id='canvas2'  width="512" height="512" style=" position: absolute; left: 0; top: 0; z-index: -10; background-color: #000000; "></canvas>
+</canvas>
+ <canvas id="viewport" width="256" height="256" style=" position: absolute; left: 0; top: 0; z-index: 0 ;">  >
+</canvas>
+ <canvas id="viewport1" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 1 ;">  ></canvas>
+  <canvas id="viewport3" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 2 ;">  >
+</canvas>
+ <canvas id="viewport4" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 3 ;">  >
+</canvas>
+<canvas id="viewport5" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 4 ;">  >
+</canvas>
+<canvas id="viewport6" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 5 ;">  >
+</canvas>
+<canvas id="viewport7" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 6 ;">  >
+</canvas>
+<canvas id="viewport8" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 7 ;">  >
+</canvas>
+<canvas id="viewport9" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 8 ;">  >
+</canvas>
+<canvas id="viewporta" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 9 ;">  >
+</canvas>
+<canvas id="viewportb" class="fullscreen" width="1024" height="768" style=" position: absolute; left: 0; top: 0; z-index: 10 ;">  >
+</canvas>
+</body>
+</html>

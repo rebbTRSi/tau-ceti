@@ -1,0 +1,79 @@
+newmtl Default
+Ka 0 0 0
+Kd 0.784314 0.784314 0.784314
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+
+newmtl Spaceship_cockpit_armature
+Ka 0 0 0
+Kd 0.192157 0.2 0.196078
+Ks 0.15 0.15 0.15
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd Spaceship_cockpit_armature.png
+
+newmtl Spaceship_cockpit_vitre
+Ka 0 0 0
+Kd 0.501961 0.0941176 0.0745098
+Ks 0.6 0.6 0.6
+Ni 1
+Ns 200
+Tf 1 1 1
+d 1
+map_Kd Spaceship_cockpit_vitre.png
+
+newmtl Spaceship_glow_react
+Ka 0 0 0
+Kd 0.109804 0.478431 0.85098
+Ks 0 0 0
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd Spaceship_glow_react.png
+
+newmtl Spaceship_Maincolor
+Ka 0 0 0
+Kd 0.588235 0.490196 0.360784
+Ks 0.3 0.3 0.3
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd Spaceship_Maincolor.png
+
+newmtl Spaceship_Maincolor2
+Ka 0 0 0
+Kd 0.278431 0.32549 0.345098
+Ks 0.1 0.1 0.1
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd Spaceship_Maincolor2.png
+
+newmtl Spaceship_Maincolor3
+Ka 0 0 0
+Kd 0.886275 0.819608 0.694118
+Ks 0.545 0.545 0.545
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd Spaceship_Maincolor3.png
+
+newmtl Spaceship_Maincolor4
+Ka 0 0 0
+Kd 0.152941 0.156863 0.172549
+Ks 0.15 0.15 0.15
+Ni 1
+Ns 400
+Tf 1 1 1
+d 1
+map_Kd Spaceship_Maincolor4.png
+
