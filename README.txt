@@ -1,5 +1,4 @@
 
-
                                          ______________    
                         _______________//              \--.
                     .-.\\                              /. |
@@ -53,13 +52,13 @@ ___/  __  \__/   \_____\___   /__/   \__\\___   \__\__/___/  _/____/  _//___
                     | |  Web browser demo, better to    | |
                     | |  use Chrome for watching.       | |
                     | | --allow-file-access-from-files  | |         
-					| |		If run from local files		| |
- 				    | |				or use				| |
-					| |	http://paradise.untergrund,net/ | |
-					| |	tau-ceti						| |
-					| |									| |
-					| |	for live version.				| |	
-					| |									| |	
+		    | |	  If run from local files	| |
+ 		    | |				or use	| |
+		    | |	http://paradise.untergrund,net/ | |
+		    | |	tau-ceti			| |
+		    | |					| |
+		    | |	for live version.		| |	
+		    | |					| |	
                     | |  Assembly 2013 Party version.	| |
                     | |  Fixed version will be released | |
                     | |  ???                            | |
